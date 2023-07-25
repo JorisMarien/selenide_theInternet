@@ -5,7 +5,11 @@ import com.codeborne.selenide.commands.SelectOptionByTextOrIndex;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.Point;
+
+import java.awt.*;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Condition.*;
@@ -77,6 +81,32 @@ public class TheInternet {
     @Test
     public void dropdown() {
         open("/dropdown");
-        $(Selectors.byId("dropdown")).selectOption
+        String option = "Option 1";
+        $(Selectors.byId("dropdown")).selectOption(1);
+        String selectedOption = $(Selectors.byId("dropdown")).getSelectedOptionText();
+        assertEquals(selectedOption, option);
+    }
+    @Test
+    public void hoverTest(){
+        open("/hovers");
+        $(Selectors.byClassName("figure")).hover();
+        String subtitle = $(Selectors.byCssSelector("h5")).getText();
+        assertEquals("name: user1", subtitle);
+    }
+    @Test
+    public void sliderTest(){
+        open("/horizontal_slider");
+        SelenideElement slider = $(Selectors.byCssSelector("input"));
+        slider.click();
+        slider.press(Keys.ARROW_RIGHT);
+
+
+    }
+    @Test
+    public void dragAndDrop() {
+        open("/drag_and_drop");
+        SelenideElement from = $(Selectors.byCssSelector("header:contains(A)"));
+        SelenideElement to = $(Selectors.byCssSelector("header:contains(B)"));
+        from.dragAndDrop((DragAndDropOptions) to);
     }
 }
